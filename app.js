@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 mongoose
-  .connect("mongodb+srv://rayen_inoubli:aaBB123@cluster0.8hsan9u.mongodb.net/")
+  .connect("mongodb://localhost:27017/gestion_livres")
   .then(() => console.log("Connected to MongoDB..."))
   .catch((err) => console.error("Could not connect to MongoDB..."));
 
