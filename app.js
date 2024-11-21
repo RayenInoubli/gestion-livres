@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import AuthorRoutes from "./routes/AuthorRoutes.js";
 import CategoryRoutes from "./routes/CategoryRoutes.js";
+import AuthRoutes from "./routes/AuthRoutes.js";
+import EventRoutes from "./routes/EventRoutes.js";
 
 dotenv.config();
 
@@ -18,7 +20,9 @@ mongoose
   .then(() => console.log("Connected to MongoDB..."))
   .catch((err) => console.error("Could not connect to MongoDB..."));
 
+app.use("/api/v1/auth", AuthRoutes);
 app.use("/api/v1/books", BookRoutes);
 app.use("/api/v1/author", AuthorRoutes);
 app.use("/api/v1/category", CategoryRoutes);
+app.use("/api/v1/event", EventRoutes);
 export default app;
