@@ -8,14 +8,29 @@ export const getBooks = async (req, res) => {
 };
 
 export const getBookById = async (req, res) => {
+  // #swagger.tags = ['Books']
+
   const book = await Book.findById(req.params.id)
     .populate("author")
-    .populate("category");
+    .populate("categories");
   res.json({ data: book });
 };
 
 export const createBook = async (req, res) => {
-  console.log("without validation");
+  // #swagger.tags = ['Books']
+
+  /*  
+    #swagger.requestBody = {
+      required: true,
+      content: {
+          "application/json": {
+              schema: {
+                  $ref: "#/components/schemas/bokkSchema"
+              }  
+          }
+      }
+    } 
+  */
 
   const newBook = new Book(req.body);
   const savedBook = await newBook.save();
@@ -23,7 +38,7 @@ export const createBook = async (req, res) => {
 };
 
 export const createWithValidation = async (req, res) => {
-  console.log("with validation");
+  // #swagger.tags = ['Books']
 
   const { error, value } = bookValidator.validate(req.body, {
     abortEarly: false,
@@ -41,7 +56,13 @@ export const createWithValidation = async (req, res) => {
 };
 
 export const updateBookById = async (req, res) => {
+  // #swagger.tags = ['Books']
+
   const book = await Book.findById(req.params.id);
+
+  if (!book) {
+    return res.status(404).json({ error: "book not found" });
+  }
 
   if (req.body.author) {
     book.author = req.body.author;
@@ -56,6 +77,8 @@ export const updateBookById = async (req, res) => {
 };
 
 export const deleteBookById = async (req, res) => {
+  // #swagger.tags = ['Books']
+
   await Book.findByIdAndDelete(req.params.id);
   res.json({ msg: "book deleted" });
 };

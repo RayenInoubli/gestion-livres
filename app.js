@@ -7,6 +7,8 @@ import AuthorRoutes from "./routes/AuthorRoutes.js";
 import CategoryRoutes from "./routes/CategoryRoutes.js";
 import AuthRoutes from "./routes/AuthRoutes.js";
 import EventRoutes from "./routes/EventRoutes.js";
+import swaggerui from "swagger-ui-express";
+import { readFile } from "fs/promises";
 
 dotenv.config();
 
@@ -19,6 +21,11 @@ mongoose
   .connect("mongodb://localhost:27017/gestion_livres")
   .then(() => console.log("Connected to MongoDB..."))
   .catch((err) => console.error("Could not connect to MongoDB..."));
+
+//begin swagger
+const json = JSON.parse(await readFile("./swagger-output.json"));
+app.use("/api/doc", swaggerui.serve, swaggerui.setup(json));
+//end swagger
 
 app.use("/api/v1/auth", AuthRoutes);
 app.use("/api/v1/books", BookRoutes);
